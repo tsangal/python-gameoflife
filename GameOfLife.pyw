@@ -3,7 +3,7 @@
 # $Id$
 #
 
-from Tkinter import *
+from tkinter import *
 from random import seed, randint
 import time
 
@@ -26,7 +26,7 @@ class LifeGrid:
     def __init__(self, xSize, ySize):
         self.xSize = xSize
         self.ySize = ySize
-        self.cells = [0 for i in xrange(xSize * ySize)]
+        self.cells = [0 for i in range(xSize * ySize)]
     
     def __getitem__(self, key):
         if isinstance(key, slice):
@@ -82,7 +82,7 @@ class Life:
         
     def nextGeneration(self):
         self.generation += 1
-        print >> sys.stderr, "Next generation (" + str(self.generation) + ")"
+        print("Next generation (" + str(self.generation) + ")", file=sys.stderr)
         
         start_time = time.clock()
         
@@ -91,8 +91,8 @@ class Life:
         grid = self.grid
         newGrid = self.oldGrid
 
-        for x in xrange(1, xSize-1):
-            for y in xrange(1, ySize-1):
+        for x in range(1, xSize-1):
+            for y in range(1, ySize-1):
                 # Get neighbor count.
                 neighborCount = 0
                 for cell in grid.neighbors(x, y):
@@ -115,7 +115,7 @@ class Life:
         self.grid = newGrid
             
         end_time = time.clock()
-        print str(end_time - start_time)
+        print(str(end_time - start_time))
         
     def neighbors(self, x, y):
         return self.grid.neighbors(x + 1, y + 1)
@@ -130,8 +130,8 @@ class Life:
 def drawGrid(grid):
     for item in canvas.find_all():
         canvas.delete(item)
-    for x in xrange(400):
-        for y in xrange(400):
+    for x in range(400):
+        for y in range(400):
             #if grid[x, y] == 1 and grid.previousGeneration(x, y) == 0:
             if grid[x, y] == 1:
                 canvas.create_rectangle(x, y, x, y, fill='black')
@@ -142,8 +142,8 @@ def drawGrid(grid):
 seed
 
 life = Life(400, 400)
-for x in xrange(400):
-    for y in xrange(400):
+for x in range(400):
+    for y in range(400):
         life[x, y] = randint(0, 2)
 #life.addCellChangeCallback(updateCell)
 

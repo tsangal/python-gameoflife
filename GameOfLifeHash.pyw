@@ -3,7 +3,7 @@
 # $Id$
 #
 
-from Tkinter import *
+from tkinter import *
 from random import seed, randint
 import time
 
@@ -119,8 +119,8 @@ def drawGrid(life):
 seed
 
 life = Life(100, 100)
-for x in xrange(100):
-    for y in xrange(100):
+for x in range(100):
+    for y in range(100):
         i = randint(0, 5)
         if i == 0:
             life[x, y] = 1
