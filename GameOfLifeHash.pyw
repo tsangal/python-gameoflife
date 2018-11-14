@@ -66,17 +66,18 @@ class LifeGrid:
         nextCol = x + 1
         prevRow = y - 1
         nextRow = y + 1
+        return [
+            (prevCol, prevRow),
+            (x, prevRow),
+            (nextCol, prevRow),
 
-        yield (prevCol, prevRow)
-        yield (x, prevRow)
-        yield (nextCol, prevRow)
+            (prevCol, y),
+            (nextCol, y),
 
-        yield (prevCol, y)
-        yield (nextCol, y)
-
-        yield (prevCol, nextRow)
-        yield (x, nextRow)
-        yield (nextCol, nextRow)
+            (prevCol, nextRow),
+            (x, nextRow),
+            (nextCol, nextRow),
+        ]
 
     def __iter__(self):
         return self.cells.__iter__()
