@@ -3,9 +3,10 @@
 # $Id$
 #
 
-from tkinter import *
+import tkinter as tk
 from random import seed, randint
 import time
+import sys
 
 
 def doDot():
@@ -154,10 +155,10 @@ for x in range(400):
         life[x, y] = randint(0, 2)
 # life.addCellChangeCallback(updateCell)
 
-root = Tk()
+root = tk.Tk()
 root.title('Game of Life')
 
-canvas = Canvas(root, width=400, height=400)
+canvas = tk.Canvas(root, width=400, height=400)
 
 canvas.create_rectangle(0, 0, 20, 20, fill='black')
 
@@ -167,4 +168,4 @@ canvas.after(2000, setIdle)
 # while 1:
 #    life.nextGeneration()
 
-mainloop()
+root.mainloop()

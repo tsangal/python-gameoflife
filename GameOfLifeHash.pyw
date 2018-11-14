@@ -3,7 +3,7 @@
 # $Id$
 #
 
-from tkinter import *
+import tkinter as tk
 from random import seed, randint
 import time
 
@@ -131,10 +131,10 @@ for x in range(100):
         if i == 0:
             life[x, y] = 1
 
-root = Tk()
+root = tk.Tk()
 root.title('Game of Life')
 
-canvas = Canvas(root, width=400, height=400)
+canvas = tk.Canvas(root, width=400, height=400)
 
 canvas.create_rectangle(0, 0, 20, 20, fill='black')
 
@@ -145,4 +145,4 @@ canvas.after(100, setIdle)
 # while 1:
 #    life.nextGeneration()
 
-mainloop()
+root.mainloop()
