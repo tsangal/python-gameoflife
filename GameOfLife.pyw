@@ -66,6 +66,7 @@ class LifeGrid:
 class Life:
 
     def __init__(self, xSize, ySize):
+        self.cells = []
         self.grid = LifeGrid(xSize + 2, ySize + 2)
         self.oldGrid = LifeGrid(xSize + 2, ySize + 2)
         self.generation = 0

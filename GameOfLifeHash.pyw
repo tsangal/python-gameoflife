@@ -1,28 +1,37 @@
 #!/usr/bin/python
-#
-# $Id$
-#
 
 import tkinter as tk
 from random import seed, randint
 import time
 
 
-def doDot():
-    global canvas
-    life.nextGeneration()
-    drawGrid(life)
-    canvas.update()
-    # canvas.update_idletasks()
-    setIdle()
+class LifeCanvasManager:
+    def __init__(self, lifeGrid, canvas):
+        self.life = lifeGrid
+        self.canvas = canvas
 
+    def update(self):
+        self.life.nextGeneration()
+        self.drawGrid(life)
+        self.canvas.update()
+        # canvas.update_idletasks()
+        self.setIdle()
 
-def updateCell(x, y, value):
-    pass
+    def updateCell(self, x, y, value):
+        pass
 
+    def drawGrid(self, life):
+        for item in self.canvas.find_all():
+            self.canvas.delete(item)
+        grid = self.life.grid
+        for cell in grid:
+            if grid[cell] == 1:
+                x, y = cell
+                self.canvas.create_rectangle(
+                    x*4, y*4, x*4+2, y*4+2, fill='black')
 
-def setIdle():
-    canvas.after_idle(doDot)
+    def setIdle(self):
+        canvas.after_idle(self.update)
 
 
 class LifeGrid:
@@ -83,7 +92,7 @@ class Life:
         self.generation += 1
         #print >> sys.stderr, "Next generation (" + str(self.generation) + ")"
 
-        start_time = time.clock()
+        #start_time = time.clock()
 
         grid = self.grid
         newGrid = LifeGrid()
@@ -112,16 +121,6 @@ class Life:
         return self.grid.neighbors(cell)
 
 
-def drawGrid(life):
-    for item in canvas.find_all():
-        canvas.delete(item)
-    grid = life.grid
-    for cell in grid:
-        if grid[cell] == 1:
-            x, y = cell
-            canvas.create_rectangle(x*4, y*4, x*4+2, y*4+2, fill='black')
-
-
 if __name__ == '__main__':
     seed
 
@@ -135,13 +134,15 @@ if __name__ == '__main__':
     root = tk.Tk()
     root.title('Game of Life')
 
-    canvas = tk.Canvas(root, width=400, height=400)
+    frame = tk.Frame(root)
+    frame.pack()
 
+    canvas = tk.Canvas(frame, width=400, height=400)
     canvas.create_rectangle(0, 0, 20, 20, fill='black')
-
     canvas.pack()
 
-    canvas.after(100, setIdle)
+    lifeManager = LifeCanvasManager(life, canvas)
+    canvas.after(100, lifeManager.setIdle)
 
     # while 1:
     #    life.nextGeneration()
