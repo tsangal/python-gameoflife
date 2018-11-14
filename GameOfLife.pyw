@@ -147,25 +147,26 @@ def drawGrid(grid):
             #    canvas.delete(item)
 
 
-seed
+if __name__ == '__main__':
+    seed
 
-life = Life(400, 400)
-for x in range(400):
-    for y in range(400):
-        life[x, y] = randint(0, 2)
-# life.addCellChangeCallback(updateCell)
+    life = Life(400, 400)
+    for x in range(400):
+        for y in range(400):
+            life[x, y] = randint(0, 2)
+    # life.addCellChangeCallback(updateCell)
 
-root = tk.Tk()
-root.title('Game of Life')
+    root = tk.Tk()
+    root.title('Game of Life')
 
-canvas = tk.Canvas(root, width=400, height=400)
+    canvas = tk.Canvas(root, width=400, height=400)
 
-canvas.create_rectangle(0, 0, 20, 20, fill='black')
+    canvas.create_rectangle(0, 0, 20, 20, fill='black')
 
-canvas.pack()
+    canvas.pack()
 
-canvas.after(2000, setIdle)
-# while 1:
-#    life.nextGeneration()
+    canvas.after(2000, setIdle)
+    # while 1:
+    #    life.nextGeneration()
 
-root.mainloop()
+    root.mainloop()

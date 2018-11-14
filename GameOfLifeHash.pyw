@@ -122,27 +122,28 @@ def drawGrid(life):
             canvas.create_rectangle(x*4, y*4, x*4+2, y*4+2, fill='black')
 
 
-seed
+if __name__ == '__main__':
+    seed
 
-life = Life(100, 100)
-for x in range(100):
-    for y in range(100):
-        i = randint(0, 5)
-        if i == 0:
-            life[x, y] = 1
+    life = Life(100, 100)
+    for x in range(100):
+        for y in range(100):
+            i = randint(0, 5)
+            if i == 0:
+                life[x, y] = 1
 
-root = tk.Tk()
-root.title('Game of Life')
+    root = tk.Tk()
+    root.title('Game of Life')
 
-canvas = tk.Canvas(root, width=400, height=400)
+    canvas = tk.Canvas(root, width=400, height=400)
 
-canvas.create_rectangle(0, 0, 20, 20, fill='black')
+    canvas.create_rectangle(0, 0, 20, 20, fill='black')
 
-canvas.pack()
+    canvas.pack()
 
-canvas.after(100, setIdle)
+    canvas.after(100, setIdle)
 
-# while 1:
-#    life.nextGeneration()
+    # while 1:
+    #    life.nextGeneration()
 
-root.mainloop()
+    root.mainloop()
