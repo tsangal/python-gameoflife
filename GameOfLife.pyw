@@ -27,7 +27,6 @@ def setIdle():
 
 
 class LifeGrid:
-
     def __init__(self, xSize, ySize):
         self.xSize = xSize
         self.ySize = ySize
@@ -38,7 +37,9 @@ class LifeGrid:
             i = key.start
             j = key.stop
             step = key.step
-            return self.cells[i[0] * self.xSize + i[1]: j[0] * self.xSize + j[1]: step]
+            return self.cells[
+                i[0] * self.xSize + i[1] : j[0] * self.xSize + j[1] : step
+            ]
         else:
             return self.cells[key[0] * self.xSize + key[1]]
 
@@ -64,7 +65,6 @@ class LifeGrid:
 
 
 class Life:
-
     def __init__(self, xSize, ySize):
         self.cells = []
         self.grid = LifeGrid(xSize + 2, ySize + 2)
@@ -79,10 +79,10 @@ class Life:
             step = key.step
             return self.cells[i:j:step]
         else:
-            return self.grid[key[0]+1, key[1]+1]
+            return self.grid[key[0] + 1, key[1] + 1]
 
     def __setitem__(self, key, value):
-        self.grid[key[0]+1, key[1]+1] = value
+        self.grid[key[0] + 1, key[1] + 1] = value
 
     def previousGeneration(self, x, y):
         return self.oldGrid[x + 1, y + 1]
@@ -98,8 +98,8 @@ class Life:
         grid = self.grid
         newGrid = self.oldGrid
 
-        for x in range(1, xSize-1):
-            for y in range(1, ySize-1):
+        for x in range(1, xSize - 1):
+            for y in range(1, ySize - 1):
                 # Get neighbor count.
                 neighborCount = 0
                 for cell in grid.neighbors(x, y):
@@ -132,7 +132,7 @@ class Life:
 
     def doCellChangeCallback(self, x, y, newValue):
         if not self.cellChangeCallback is None:
-            self.cellChangeCallback(x-1, y-1, newValue)
+            self.cellChangeCallback(x - 1, y - 1, newValue)
 
 
 def drawGrid(grid):
@@ -142,13 +142,13 @@ def drawGrid(grid):
         for y in range(400):
             # if grid[x, y] == 1 and grid.previousGeneration(x, y) == 0:
             if grid[x, y] == 1:
-                canvas.create_rectangle(x, y, x, y, fill='black')
+                canvas.create_rectangle(x, y, x, y, fill="black")
             # elif grid[x, y] == 0 and grid.previousGeneration(x, y) == 1:
             #    item = canvas.find_closest(x, y)
             #    canvas.delete(item)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     seed
 
     life = Life(400, 400)
@@ -158,11 +158,11 @@ if __name__ == '__main__':
     # life.addCellChangeCallback(updateCell)
 
     root = tk.Tk()
-    root.title('Game of Life')
+    root.title("Game of Life")
 
     canvas = tk.Canvas(root, width=400, height=400)
 
-    canvas.create_rectangle(0, 0, 20, 20, fill='black')
+    canvas.create_rectangle(0, 0, 20, 20, fill="black")
 
     canvas.pack()
 

@@ -29,7 +29,8 @@ class LifeCanvasManager:
             if grid[cell] == 1:
                 x, y = cell
                 self.canvas.create_rectangle(
-                    x*4, y*4, x*4+2, y*4+2, fill='black')
+                    x * 4, y * 4, x * 4 + 2, y * 4 + 2, fill="black"
+                )
 
     def randomize(self):
         canvas.after_idle(self.life.randomize)
@@ -50,7 +51,6 @@ class LifeCanvasManager:
 
 
 class LifeGrid:
-
     def __init__(self):
         self.cells = {}
 
@@ -70,10 +70,8 @@ class LifeGrid:
             (prevCol, prevRow),
             (x, prevRow),
             (nextCol, prevRow),
-
             (prevCol, y),
             (nextCol, y),
-
             (prevCol, nextRow),
             (x, nextRow),
             (nextCol, nextRow),
@@ -87,7 +85,6 @@ class LifeGrid:
 
 
 class Life:
-
     def __init__(self, xSize, ySize):
         self.xSize = xSize
         self.ySize = ySize
@@ -108,7 +105,7 @@ class Life:
         for x in range(self.xSize):
             for y in range(self.ySize):
                 i = randint(0, 5)
-                life[x, y] = (i == 0)
+                life[x, y] = i == 0
 
     def nextGeneration(self):
         self.generation += 1
@@ -155,18 +152,18 @@ class StartStopState:
 
     def _updateLabel(self):
         if self.started:
-            self.label.set('Stop')
+            self.label.set("Stop")
         else:
-            self.label.set('Start')
+            self.label.set("Start")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     seed
 
     life = Life(100, 100)
 
     root = tk.Tk()
-    root.title('Game of Life')
+    root.title("Game of Life")
 
     frame = tk.Frame(root)
     frame.pack()
@@ -192,20 +189,16 @@ if __name__ == '__main__':
             lifeManager.stop()
 
     startStopButton = tk.Button(
-        buttonFrame,
-        textvariable=startStopState.label,
-        command=handleStartStop
+        buttonFrame, textvariable=startStopState.label, command=handleStartStop
     )
     startStopButton.pack(side=tk.LEFT)
 
     randomizeButton = tk.Button(
-        buttonFrame,
-        text='Randomize',
-        command=lifeManager.randomize,
+        buttonFrame, text="Randomize", command=lifeManager.randomize,
     )
     randomizeButton.pack(side=tk.LEFT)
 
-    canvas.create_rectangle(0, 0, 20, 20, fill='black')
+    canvas.create_rectangle(0, 0, 20, 20, fill="black")
     canvas.pack()
     # canvas.after(100, lifeManager.setIdle)
 
