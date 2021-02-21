@@ -91,7 +91,7 @@ class Life:
         self.generation += 1
         print("Next generation (" + str(self.generation) + ")", file=sys.stderr)
 
-        start_time = time.clock()
+        start_time = time.process_time()
 
         xSize = self.grid.xSize
         ySize = self.grid.ySize
@@ -121,7 +121,7 @@ class Life:
         self.oldGrid = grid
         self.grid = newGrid
 
-        end_time = time.clock()
+        end_time = time.process_time()
         print(str(end_time - start_time))
 
     def neighbors(self, x, y):
