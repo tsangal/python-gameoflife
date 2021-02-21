@@ -5,6 +5,50 @@ from random import seed, randint
 import time
 
 
+class Application(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.pack()
+        self.create_widgets()
+
+    def create_widgets(self):
+        seed
+        life = Life(100, 100)
+
+        frame = tk.Frame(root)
+        frame.pack()
+
+        canvas = tk.Canvas(frame, width=400, height=400)
+        lifeManager = LifeCanvasManager(life, canvas)
+        lifeManager.randomize()
+
+        buttonFrame = tk.Frame(frame)
+        buttonFrame.pack()
+
+        startStopState = StartStopState()
+
+        def handleStartStop():
+            startStopState.toggle()
+
+            if startStopState.started:
+                lifeManager.start()
+            else:
+                lifeManager.stop()
+
+        startStopButton = tk.Button(
+            buttonFrame, textvariable=startStopState.label, command=handleStartStop
+        )
+        startStopButton.pack(side=tk.LEFT)
+
+        randomizeButton = tk.Button(
+            buttonFrame, text="Randomize", command=lifeManager.randomize,
+        )
+        randomizeButton.pack(side=tk.LEFT)
+
+        canvas.create_rectangle(0, 0, 20, 20, fill="black")
+        canvas.pack()
+
+
 class LifeCanvasManager:
     def __init__(self, life, canvas):
         self.life = life
@@ -33,8 +77,8 @@ class LifeCanvasManager:
                 )
 
     def randomize(self):
-        canvas.after_idle(self.life.randomize)
-        canvas.after_idle(self.drawGrid)
+        self.canvas.after_idle(self.life.randomize)
+        self.canvas.after_idle(self.drawGrid)
 
     def start(self):
         was_running = self.run
@@ -47,7 +91,7 @@ class LifeCanvasManager:
 
     def _setIdle(self):
         if self.run:
-            canvas.after_idle(self.update)
+            self.canvas.after_idle(self.update)
 
 
 class LifeGrid:
@@ -105,7 +149,7 @@ class Life:
         for x in range(self.xSize):
             for y in range(self.ySize):
                 i = randint(0, 5)
-                life[x, y] = i == 0
+                self[x, y] = i == 0
 
     def nextGeneration(self):
         self.generation += 1
@@ -158,51 +202,8 @@ class StartStopState:
 
 
 if __name__ == "__main__":
-    seed
-
-    life = Life(100, 100)
-
     root = tk.Tk()
     root.title("Game of Life")
 
-    frame = tk.Frame(root)
-    frame.pack()
-
-    canvas = tk.Canvas(frame, width=400, height=400)
-    lifeManager = LifeCanvasManager(life, canvas)
-    lifeManager.randomize()
-
-    buttonFrame = tk.Frame(frame)
-    buttonFrame.pack()
-
-    startStopState = StartStopState()
-
-    def handleStartStop():
-        global startStopState
-        global lifeManager
-
-        startStopState.toggle()
-
-        if startStopState.started:
-            lifeManager.start()
-        else:
-            lifeManager.stop()
-
-    startStopButton = tk.Button(
-        buttonFrame, textvariable=startStopState.label, command=handleStartStop
-    )
-    startStopButton.pack(side=tk.LEFT)
-
-    randomizeButton = tk.Button(
-        buttonFrame, text="Randomize", command=lifeManager.randomize,
-    )
-    randomizeButton.pack(side=tk.LEFT)
-
-    canvas.create_rectangle(0, 0, 20, 20, fill="black")
-    canvas.pack()
-    # canvas.after(100, lifeManager.setIdle)
-
-    # while 1:
-    #    life.nextGeneration()
-
-    root.mainloop()
+    app = Application(root)
+    app.mainloop()
