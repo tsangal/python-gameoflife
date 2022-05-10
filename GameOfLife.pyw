@@ -1,7 +1,4 @@
 #!/usr/bin/python
-#
-# $Id$
-#
 
 import tkinter as tk
 from random import seed, randint

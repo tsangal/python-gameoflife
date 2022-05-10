@@ -41,7 +41,9 @@ class Application(tk.Frame):
         startStopButton.pack(side=tk.LEFT)
 
         randomizeButton = tk.Button(
-            buttonFrame, text="Randomize", command=lifeManager.randomize,
+            buttonFrame,
+            text="Randomize",
+            command=lifeManager.randomize,
         )
         randomizeButton.pack(side=tk.LEFT)
 
