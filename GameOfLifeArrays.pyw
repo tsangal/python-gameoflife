@@ -49,16 +49,16 @@ class LifeGrid:
         prevRow = y - 1
         nextRow = y + 1
 
-        yield self[prevCol, prevRow]
-        yield self[x, prevRow]
-        yield self[nextCol, prevRow]
-
-        yield self[prevCol, y]
-        yield self[nextCol, y]
-
-        yield self[prevCol, nextRow]
-        yield self[x, nextRow]
-        yield self[nextCol, nextRow]
+        return (
+            self[prevCol, prevRow],
+            self[x, prevRow],
+            self[nextCol, prevRow],
+            self[prevCol, y],
+            self[nextCol, y],
+            self[prevCol, nextRow],
+            self[x, nextRow],
+            self[nextCol, nextRow],
+        )
 
 
 class Life:

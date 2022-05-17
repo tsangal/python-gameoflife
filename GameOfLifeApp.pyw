@@ -3,24 +3,22 @@
 import tkinter as tk
 from random import seed
 
-from game_of_life_hash import Life
-
 
 class Application(tk.Frame):
-    def __init__(self, master=None):
+    def __init__(self, gameOfLife, master=None):
         super().__init__(master)
+
+        self.gameOfLife = gameOfLife
+
         self.pack()
         self.create_widgets()
 
     def create_widgets(self):
-        seed
-        life = Life(100, 100)
-
         frame = tk.Frame(root)
         frame.pack()
 
         canvas = tk.Canvas(frame, width=400, height=400)
-        lifeManager = LifeCanvasManager(life, canvas)
+        lifeManager = LifeCanvasManager(self.gameOfLife, canvas)
         lifeManager.randomize()
 
         buttonFrame = tk.Frame(frame)
@@ -53,13 +51,13 @@ class Application(tk.Frame):
 
 
 class LifeCanvasManager:
-    def __init__(self, life, canvas):
-        self.life = life
+    def __init__(self, gameOfLife, canvas):
+        self.gameOfLife = gameOfLife
         self.canvas = canvas
         self.run = False
 
     def update(self):
-        self.life.nextGeneration()
+        self.gameOfLife.nextGeneration()
         self.drawGrid()
         self.canvas.update()
         # canvas.update_idletasks()
@@ -71,7 +69,7 @@ class LifeCanvasManager:
     def drawGrid(self):
         for item in self.canvas.find_all():
             self.canvas.delete(item)
-        grid = self.life.grid
+        grid = self.gameOfLife.grid
         for cell in grid:
             if grid[cell] == 1:
                 x, y = cell
@@ -80,7 +78,7 @@ class LifeCanvasManager:
                 )
 
     def randomize(self):
-        self.canvas.after_idle(self.life.randomize)
+        self.canvas.after_idle(self.gameOfLife.randomize)
         self.canvas.after_idle(self.drawGrid)
 
     def start(self):
@@ -115,8 +113,14 @@ class StartStopState:
 
 
 if __name__ == "__main__":
+    seed()
+
     root = tk.Tk()
     root.title("Game of Life")
 
-    app = Application(root)
+    from game_of_life_hash import GameOfLifeHash
+
+    life = GameOfLifeHash(100, 100)
+
+    app = Application(life, root)
     app.mainloop()
