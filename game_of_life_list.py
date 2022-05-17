@@ -1,26 +1,7 @@
 #!/usr/bin/python
 
-import tkinter as tk
-from random import seed, randint
+from random import randint
 import time
-import sys
-
-
-def doDot():
-    global canvas
-    life.nextGeneration()
-    drawGrid(life)
-    canvas.update()
-    # canvas.update_idletasks()
-    setIdle()
-
-
-def updateCell(x, y, value):
-    pass
-
-
-def setIdle():
-    canvas.after_idle(doDot)
 
 
 class LifeGrid:
@@ -60,10 +41,15 @@ class LifeGrid:
             self[nextCol, nextRow],
         )
 
+    def __iter__(self):
+        return ((x, y) for x in range(self.xSize) for y in range(self.ySize))
 
-class Life:
+
+class GameOfLifeList:
     def __init__(self, xSize, ySize):
         self.cells = []
+        self.xSize = xSize
+        self.ySize = ySize
         self.grid = LifeGrid(xSize + 2, ySize + 2)
         self.oldGrid = LifeGrid(xSize + 2, ySize + 2)
         self.generation = 0
@@ -81,12 +67,18 @@ class Life:
     def __setitem__(self, key, value):
         self.grid[key[0] + 1, key[1] + 1] = value
 
+    def randomize(self):
+        for x in range(self.xSize):
+            for y in range(self.ySize):
+                i = randint(0, 5)
+                self[x, y] = i == 0
+
     def previousGeneration(self, x, y):
         return self.oldGrid[x + 1, y + 1]
 
     def nextGeneration(self):
         self.generation += 1
-        print("Next generation (" + str(self.generation) + ")", file=sys.stderr)
+        # print("Next generation (" + str(self.generation) + ")", file=sys.stderr)
 
         start_time = time.process_time()
 
@@ -119,7 +111,7 @@ class Life:
         self.grid = newGrid
 
         end_time = time.process_time()
-        print(str(end_time - start_time))
+        # print(str(end_time - start_time))
 
     def neighbors(self, x, y):
         return self.grid.neighbors(x + 1, y + 1)
@@ -130,41 +122,3 @@ class Life:
     def doCellChangeCallback(self, x, y, newValue):
         if not self.cellChangeCallback is None:
             self.cellChangeCallback(x - 1, y - 1, newValue)
-
-
-def drawGrid(grid):
-    for item in canvas.find_all():
-        canvas.delete(item)
-    for x in range(400):
-        for y in range(400):
-            # if grid[x, y] == 1 and grid.previousGeneration(x, y) == 0:
-            if grid[x, y] == 1:
-                canvas.create_rectangle(x, y, x, y, fill="black")
-            # elif grid[x, y] == 0 and grid.previousGeneration(x, y) == 1:
-            #    item = canvas.find_closest(x, y)
-            #    canvas.delete(item)
-
-
-if __name__ == "__main__":
-    seed
-
-    life = Life(400, 400)
-    for x in range(400):
-        for y in range(400):
-            life[x, y] = randint(0, 2)
-    # life.addCellChangeCallback(updateCell)
-
-    root = tk.Tk()
-    root.title("Game of Life")
-
-    canvas = tk.Canvas(root, width=400, height=400)
-
-    canvas.create_rectangle(0, 0, 20, 20, fill="black")
-
-    canvas.pack()
-
-    canvas.after(2000, setIdle)
-    # while 1:
-    #    life.nextGeneration()
-
-    root.mainloop()

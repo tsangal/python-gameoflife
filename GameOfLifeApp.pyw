@@ -1,5 +1,6 @@
 #! /usr/bin/python3
 
+import argparse
 import tkinter as tk
 from random import seed
 
@@ -112,15 +113,29 @@ class StartStopState:
             self.label.set("Start")
 
 
+def parseArgs():
+    parser = argparse.ArgumentParser(description="Game of Life App")
+    parser.add_argument("-a", "--algorithm", choices=("hash", "list"), default="hash")
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
+    args = parseArgs()
+
     seed()
 
     root = tk.Tk()
     root.title("Game of Life")
 
-    from game_of_life_hash import GameOfLifeHash
+    match args.algorithm:
+        case "hash":
+            from game_of_life_hash import GameOfLifeHash as GameOfLife
+        case "list":
+            from game_of_life_list import GameOfLifeList as GameOfLife
+        case _:
+            raise Exception(f"Unknown algorithm '{args.algorithm}'")
 
-    life = GameOfLifeHash(100, 100)
+    life = GameOfLife(100, 100)
 
     app = Application(life, root)
     app.mainloop()

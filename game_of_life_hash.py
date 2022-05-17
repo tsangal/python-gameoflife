@@ -1,4 +1,4 @@
-from random import seed, randint
+from random import randint
 import time
 
 
