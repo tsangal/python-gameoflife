@@ -115,7 +115,7 @@ class StartStopState:
 
 def parseArgs():
     parser = argparse.ArgumentParser(description="Game of Life App")
-    parser.add_argument("-a", "--algorithm", choices=("hash", "list"), default="hash")
+    parser.add_argument("-a", "--algorithm", choices=("dict", "list"), default="dict")
     return parser.parse_args()
 
 
@@ -128,8 +128,8 @@ if __name__ == "__main__":
     root.title("Game of Life")
 
     match args.algorithm:
-        case "hash":
-            from game_of_life_hash import GameOfLifeHash as GameOfLife
+        case "dict":
+            from game_of_life_dict import GameOfLifeDict as GameOfLife
         case "list":
             from game_of_life_list import GameOfLifeList as GameOfLife
         case _:

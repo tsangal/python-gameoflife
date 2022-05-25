@@ -36,7 +36,7 @@ class LifeGrid:
         self.cells.setdefault(key, value)
 
 
-class GameOfLifeHash:
+class GameOfLifeDict:
     def __init__(self, xSize, ySize):
         self.xSize = xSize
         self.ySize = ySize
