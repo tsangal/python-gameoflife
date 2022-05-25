@@ -114,8 +114,17 @@ class StartStopState:
 
 
 def parseArgs():
-    parser = argparse.ArgumentParser(description="Game of Life App")
-    parser.add_argument("-a", "--algorithm", choices=("dict", "list"), default="dict")
+    parser = argparse.ArgumentParser(
+        description="Game of Life App",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument(
+        "-a",
+        "--algorithm",
+        choices=("dict", "list"),
+        default="dict",
+        help="Use the given algorithm",
+    )
     return parser.parse_args()
 
 
