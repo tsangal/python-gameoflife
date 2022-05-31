@@ -67,14 +67,20 @@ class GameOfLifeDict:
 
         # start_time = time.clock()
 
+        xSize = self.xSize
+        ySize = self.ySize
         grid = self.grid
-        newGrid = LifeGrid(self.xSize, self.ySize)
+        newGrid = LifeGrid(xSize, ySize)
+
+        # Increment neighbor counts of live cells
+        neighborGrid = LifeGrid(xSize, ySize)
+        for cell in grid:
+            if grid[cell]:
+                for neighbor in neighborGrid.neighbors(cell):
+                    neighborGrid[neighbor] += 1
 
         for cell in grid:
-            neighborCount = 0
-            for neighbor in grid.neighbors(cell):
-                if grid[neighbor] != 0:
-                    neighborCount += 1
+            neighborCount = neighborGrid[cell]
 
             # Determine new state of cell.
             if neighborCount == 3 or (grid[cell] != 0 and neighborCount == 2):

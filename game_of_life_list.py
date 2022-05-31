@@ -31,14 +31,14 @@ class LifeGrid:
         nextRow = (y + 1) % self.ySize
 
         return (
-            self[prevCol, prevRow],
-            self[x, prevRow],
-            self[nextCol, prevRow],
-            self[prevCol, y],
-            self[nextCol, y],
-            self[prevCol, nextRow],
-            self[x, nextRow],
-            self[nextCol, nextRow],
+            (prevCol, prevRow),
+            (x, prevRow),
+            (nextCol, prevRow),
+            (prevCol, y),
+            (nextCol, y),
+            (prevCol, nextRow),
+            (x, nextRow),
+            (nextCol, nextRow),
         )
 
     def __iter__(self):
@@ -82,18 +82,22 @@ class GameOfLifeList:
 
         start_time = time.process_time()
 
-        xSize = self.grid.xSize
-        ySize = self.grid.ySize
+        xSize = self.xSize
+        ySize = self.ySize
         grid = self.grid
         newGrid = self.oldGrid
 
+        # Increment neighbor counts of live cells
+        neighborGrid = LifeGrid(self.xSize, self.ySize)
         for x in range(xSize):
             for y in range(ySize):
-                # Get neighbor count.
-                neighborCount = 0
-                for cell in grid.neighbors(x, y):
-                    if cell != 0:
-                        neighborCount += 1
+                if grid[x, y]:
+                    for neighbor in neighborGrid.neighbors(x, y):
+                        neighborGrid[neighbor] += 1
+
+        for x in range(xSize):
+            for y in range(ySize):
+                neighborCount = neighborGrid[x, y]
 
                 # Determine new state of cell.
                 if neighborCount == 2:
