@@ -25,10 +25,10 @@ class LifeGrid:
         self.cells[key[0] * self.xSize + key[1]] = value
 
     def neighbors(self, x, y):
-        prevCol = x - 1
-        nextCol = x + 1
-        prevRow = y - 1
-        nextRow = y + 1
+        prevCol = (x - 1) % self.xSize
+        nextCol = (x + 1) % self.xSize
+        prevRow = (y - 1) % self.ySize
+        nextRow = (y + 1) % self.ySize
 
         return (
             self[prevCol, prevRow],
@@ -50,22 +50,22 @@ class GameOfLifeList:
         self.cells = []
         self.xSize = xSize
         self.ySize = ySize
-        self.grid = LifeGrid(xSize + 2, ySize + 2)
-        self.oldGrid = LifeGrid(xSize + 2, ySize + 2)
+        self.grid = LifeGrid(xSize, ySize)
+        self.oldGrid = LifeGrid(xSize, ySize)
         self.generation = 0
         self.cellChangeCallback = None
 
     def __getitem__(self, key):
         if isinstance(key, slice):
-            i = key.start[0] + 1, key.start[1] + 1
-            j = key.stop[0] + 1, key.stop[1] + 1
+            i = key.start[0], key.start[1]
+            j = key.stop[0], key.stop[1]
             step = key.step
             return self.cells[i:j:step]
         else:
-            return self.grid[key[0] + 1, key[1] + 1]
+            return self.grid[key[0], key[1]]
 
     def __setitem__(self, key, value):
-        self.grid[key[0] + 1, key[1] + 1] = value
+        self.grid[key[0], key[1]] = value
 
     def randomize(self):
         for x in range(self.xSize):
@@ -74,7 +74,7 @@ class GameOfLifeList:
                 self[x, y] = i == 0
 
     def previousGeneration(self, x, y):
-        return self.oldGrid[x + 1, y + 1]
+        return self.oldGrid[x, y]
 
     def nextGeneration(self):
         self.generation += 1
@@ -87,8 +87,8 @@ class GameOfLifeList:
         grid = self.grid
         newGrid = self.oldGrid
 
-        for x in range(1, xSize - 1):
-            for y in range(1, ySize - 1):
+        for x in range(xSize):
+            for y in range(ySize):
                 # Get neighbor count.
                 neighborCount = 0
                 for cell in grid.neighbors(x, y):
@@ -114,11 +114,11 @@ class GameOfLifeList:
         # print(str(end_time - start_time))
 
     def neighbors(self, x, y):
-        return self.grid.neighbors(x + 1, y + 1)
+        return self.grid.neighbors(x, y)
 
     def addCellChangeCallback(self, fn):
         self.cellChangeCallback = fn
 
     def doCellChangeCallback(self, x, y, newValue):
         if not self.cellChangeCallback is None:
-            self.cellChangeCallback(x - 1, y - 1, newValue)
+            self.cellChangeCallback(x, y, newValue)

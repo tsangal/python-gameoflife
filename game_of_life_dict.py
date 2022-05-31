@@ -3,7 +3,9 @@ import time
 
 
 class LifeGrid:
-    def __init__(self):
+    def __init__(self, xSize, ySize):
+        self.xSize = xSize
+        self.ySize = ySize
         self.cells = {}
 
     def __getitem__(self, key):
@@ -14,10 +16,10 @@ class LifeGrid:
 
     def neighbors(self, key):
         x, y = key
-        prevCol = x - 1
-        nextCol = x + 1
-        prevRow = y - 1
-        nextRow = y + 1
+        prevCol = (x - 1) % self.xSize
+        nextCol = (x + 1) % self.xSize
+        prevRow = (y - 1) % self.ySize
+        nextRow = (y + 1) % self.ySize
         return (
             (prevCol, prevRow),
             (x, prevRow),
@@ -40,7 +42,7 @@ class GameOfLifeDict:
     def __init__(self, xSize, ySize):
         self.xSize = xSize
         self.ySize = ySize
-        self.grid = LifeGrid()
+        self.grid = LifeGrid(xSize, ySize)
         # self.oldGrid = LifeGrid()
         self.generation = 0
 
@@ -66,7 +68,7 @@ class GameOfLifeDict:
         # start_time = time.clock()
 
         grid = self.grid
-        newGrid = LifeGrid()
+        newGrid = LifeGrid(self.xSize, self.ySize)
 
         for cell in grid:
             neighborCount = 0
