@@ -68,8 +68,7 @@ class LifeCanvasManager:
         pass
 
     def drawGrid(self):
-        for item in self.canvas.find_all():
-            self.canvas.delete(item)
+        self.canvas.delete("all")
         grid = self.gameOfLife.grid
         for cell in grid:
             if grid[cell] == 1:
