@@ -79,16 +79,21 @@ class GameOfLifeDict:
                 for neighbor in neighborGrid.neighbors(cell):
                     neighborGrid[neighbor] += 1
 
+        changed = LifeGrid(xSize, ySize)
         for cell in grid:
             neighborCount = neighborGrid[cell]
+            oldValue = grid[cell]
 
             # Determine new state of cell.
-            if neighborCount == 3 or (grid[cell] != 0 and neighborCount == 2):
-                x, y = cell
-                if x >= 0 and x < self.xSize and y >= 0 and y < self.ySize:
-                    newGrid[cell] = 1
-                    for neighbor in grid.neighbors(cell):
-                        newGrid.setdefault(neighbor, 0)
+            newValue = 0
+            if neighborCount == 3 or (oldValue != 0 and neighborCount == 2):
+                newGrid[cell] = newValue = 1
+            if newValue != oldValue:
+                changed[cell] = 1
+
+        for changedCell in changed:
+            for neighbor in newGrid.neighbors(changedCell):
+                newGrid.setdefault(neighbor, 0)
 
         # self.oldGrid = grid
         self.grid = newGrid
