@@ -18,7 +18,9 @@ class Application(tk.Frame):
         frame = tk.Frame(root)
         frame.pack()
 
-        canvas = tk.Canvas(frame, width=400, height=400)
+        canvas = tk.Canvas(
+            frame, width=self.gameOfLife.xSize * 4, height=self.gameOfLife.ySize * 4
+        )
         lifeManager = LifeCanvasManager(self.gameOfLife, canvas)
         lifeManager.randomize()
 
@@ -124,6 +126,8 @@ def parseArgs():
         default="dict",
         help="Use the given algorithm",
     )
+    parser.add_argument("-x", type=int, default=100, help="Width in cells")
+    parser.add_argument("-y", type=int, default=100, help="Height in cells")
     return parser.parse_args()
 
 
@@ -143,7 +147,7 @@ if __name__ == "__main__":
         case _:
             raise Exception(f"Unknown algorithm '{args.algorithm}'")
 
-    life = GameOfLife(100, 100)
+    life = GameOfLife(args.x, args.y)
 
     app = Application(life, root)
     app.mainloop()
